@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEE Advanced 2026 — Cheating Exposed</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e8e6e0;font-family:'Space Mono',monospace;min-height:100vh}
+.ticker{background:#c0392b;color:#fff;font-size:11px;letter-spacing:2px;padding:6px 0;text-align:center;font-weight:700}
+.hero{background:#0a0a0a;border-bottom:1px solid #2a2a2a;padding:3rem 2rem 2rem;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#c0392b,#e74c3c,#c0392b)}
+.hero h1{font-family:'Libre Baskerville',serif;font-size:clamp(1.6rem,4vw,2.8rem);color:#fff;line-height:1.2;margin:1rem 0 0.5rem;font-style:italic}
+.hero h1 span{color:#e74c3c;font-style:normal}
+.hero p{font-size:12px;color:#888;letter-spacing:1px;margin-bottom:1.5rem}
+.stats-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:1.5rem}
+.stat .num{font-size:2rem;font-weight:700;color:#e74c3c}
+.stat .lbl{font-size:10px;color:#666;letter-spacing:2px;margin-top:2px;text-align:center}
+nav{display:flex;justify-content:center;background:#111;border-bottom:1px solid #2a2a2a;flex-wrap:wrap}
+.nav-btn{background:none;border:none;color:#888;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.nav-btn.active,.nav-btn:hover{color:#e74c3c;border-bottom-color:#e74c3c}
+.section{display:none;padding:2rem;max-width:900px;margin:0 auto}
+.section.active{display:block}
+.section-title{font-family:'Libre Baskerville',serif;font-size:1.4rem;color:#fff;margin-bottom:0.3rem;font-style:italic}
+.section-sub{font-size:11px;color:#666;letter-spacing:1px;margin-bottom:2rem;border-bottom:1px solid #1e1e1e;padding-bottom:1rem}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:1.5rem}
+thead tr{background:#1a1a1a;border-bottom:1px solid #e74c3c}
+th{padding:10px 14px;text-align:left;color:#e74c3c;letter-spacing:2px;font-size:10px}
+td{padding:10px 14px;border-bottom:1px solid #1a1a1a;color:#ccc}
+tr:hover td{background:#111}
+.delta-red{color:#e74c3c;font-weight:700}
+.card{background:#111;border:1px solid #2a2a2a;border-radius:4px;padding:1.5rem;margin-bottom:1rem}
+.card-title{font-size:11px;color:#666;letter-spacing:2px;margin-bottom:0.5rem}
+.card-body{font-size:13px;color:#ccc;line-height:1.9}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:10px;color:#888;letter-spacing:2px;margin-bottom:6px}
+input[type=text],input[type=email],textarea,select{width:100%;background:#0a0a0a;border:1px solid #2a2a2a;color:#e8e6e0;font-family:'Space Mono',monospace;font-size:12px;padding:10px 12px;border-radius:2px;outline:none;transition:border 0.2s}
+input:focus,textarea:focus,select:focus{border-color:#e74c3c}
+textarea{resize:vertical;min-height:100px}
+select option{background:#111}
+.btn{background:#e74c3c;color:#fff;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;padding:12px 24px;cursor:pointer;border-radius:2px;font-weight:700;transition:background 0.2s}
+.btn:hover{background:#c0392b}
+.btn-outline{background:transparent;border:1px solid #e74c3c;color:#e74c3c}
+.btn-outline:hover{background:#e74c3c;color:#fff}
+.petition-count{font-size:3rem;font-weight:700;color:#e74c3c;text-align:center;margin:1rem 0 0.3rem}
+.petition-bar-bg{background:#1a1a1a;border-radius:2px;height:6px;margin:0.5rem 0 0.5rem}
+.petition-bar{background:#e74c3c;height:6px;border-radius:2px;transition:width 0.4s}
+.target-note{font-size:10px;color:#666;letter-spacing:1px;text-align:center;margin-bottom:2rem}
+.contact-card{background:#111;border:1px solid #2a2a2a;border-left:3px solid #e74c3c;padding:1.2rem 1.5rem;margin-bottom:1rem;border-radius:2px}
+.contact-name{font-size:13px;color:#fff;font-weight:700;margin-bottom:4px}
+.contact-role{font-size:10px;color:#888;letter-spacing:1px;margin-bottom:8px}
+.contact-email{font-size:12px;color:#e74c3c}
+.notice{background:#150808;border:1px solid #3a1010;padding:1rem 1.2rem;font-size:12px;color:#999;line-height:1.8;margin-bottom:2rem;border-radius:2px}
+.sources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:2rem}
+.source-card{background:#111;border:1px solid #2a2a2a;padding:1rem;border-radius:2px}
+.source-type{font-size:9px;color:#e74c3c;letter-spacing:2px;margin-bottom:6px}
+.source-title{font-size:12px;color:#ccc;line-height:1.5;margin-bottom:8px}
+a.source-link{font-size:10px;color:#e74c3c;text-decoration:none;border-bottom:1px solid #e74c3c44;letter-spacing:1px}
+button.source-link{background:none;border:none;border-bottom:1px solid #e74c3c44;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;color:#e74c3c;letter-spacing:1px;padding:0}
+.toast{position:fixed;bottom:2rem;right:2rem;background:#e74c3c;color:#fff;padding:12px 20px;font-size:11px;letter-spacing:1px;border-radius:2px;display:none;z-index:999}
+footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1px;border-top:1px solid #1a1a1a;margin-top:2rem}
+</style>
+</head>
+<body>
+
+<div class="ticker">⚠ JEE ADVANCED 2026 — ALLEGED LARGE-SCALE CHEATING — 177+ FLAGGED FROM ~30,000 STUDENT DATASET</div>
+
+<div class="hero">
+  <div style="font-size:10px;color:#666;letter-spacing:3px;margin-bottom:0.5rem">EVIDENCE ARCHIVE</div>
+  <h1>Exposing <span>Cheating</span> in<br>JEE Advanced 2026</h1>
+  <p>STATISTICAL ANOMALIES · CROWDSOURCED EVIDENCE · PETITION TO IIT KANPUR</p>
+  <div class="stats-row">
+    <div class="stat"><div class="num">177+</div><div class="lbl">Flagged cases</div></div>
+    <div class="stat"><div class="num">~30K</div><div class="lbl">Dataset size</div></div>
+    <div class="stat"><div class="num">126</div><div class="lbl">Max delta (P2−P1)</div></div>
+    <div class="stat"><div class="num" id="sig-count">...</div><div class="lbl">Signatures</div></div>
+  </div>
+</div>
+
+<nav>
+  <button class="nav-btn active" onclick="show('evidence',this)">EVIDENCE</button>
+  <button class="nav-btn" onclick="show('sources',this)">SOURCES</button>
+  <button class="nav-btn" onclick="show('submit',this)">SUBMIT PROOF</button>
+  <button class="nav-btn" onclick="show('petition',this)">PETITION</button>
+  <button class="nav-btn" onclick="show('contact',this)">CONTACT IIT</button>
+</nav>
+
+<div id="evidence" class="section active">
+  <div class="section-title">Statistical Evidence</div>
+  <div class="section-sub">DATA SOURCE: CRACKU RANK PREDICTOR — ~30,000 STUDENT DATASET</div>
+  <div class="notice">
+    A statistical analysis of Cracku's JEE Advanced 2026 rank predictor data (~30,000 students) by Reddit user u/Ok-Style1340 identified 177+ candidates with a Paper 2 score more than 60 marks higher than their Paper 1 score. The most extreme case: P1 score of 16, P2 score of 142 — a delta of +126 marks. Such anomalies are statistically inconsistent with normal performance variation and warrant an official investigation.
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>DELTA (P2−P1)</th><th>PAPER 1</th><th>PAPER 2</th></tr></thead>
+    <tbody id="table-body"></tbody>
+  </table>
+  <p style="font-size:11px;color:#555;text-align:center">Showing top cases from the Cracku dataset. Full data on Reddit r/JEEAdv26dailyupdates.</p>
+</div>
+
+<div id="sources" class="section">
+  <div class="section-title">Source Archive</div>
+  <div class="section-sub">ALL KNOWN EVIDENCE SOURCES</div>
+  <div class="sources-grid">
+    <div class="source-card">
+      <div class="source-type">REDDIT · STATISTICAL ANALYSIS</div>
+      <div class="source-title">List of cheaters in JEE Advanced 2026 from Cracku data — 177 cases flagged</div>
+      <a class="source-link" href="https://www.reddit.com/r/JEEAdv26dailyupdates/comments/1tymcep/" target="_blank">r/JEEAdv26dailyupdates →</a>
+    </div>
+    <div class="source-card">
+      <div class="source-type">REDDIT · COMMUNITY</div>
+      <div class="source-title">JEEAdv26dailyupdates subreddit — ongoing discussion, 65K members</div>
+      <a class="source-link" href="https://www.reddit.com/r/JEEAdv26dailyupdates/" target="_blank">r/JEEAdv26dailyupdates →</a>
+    </div>
+    <div class="source-card">
+      <div class="source-type">DATA · SCORE PLATFORM</div>
+      <div class="source-title">Cracku JEE Advanced 2026 rank predictor — source dataset for the delta analysis</div>
+      <a class="source-link" href="https://cracku.in" target="_blank">cracku.in →</a>
+    </div>
+    <div class="source-card">
+      <div class="source-type">SUBMIT · ADD SOURCE</div>
+      <div class="source-title">Know of another source, article, or video? Submit it using the proof form.</div>
+      <button class="source-link" onclick="show('submit',document.querySelectorAll('.nav-btn')[2])">Submit a source →</button>
+    </div>
+  </div>
+</div>
+
+<div id="submit" class="section">
+  <div class="section-title">Submit Evidence</div>
+  <div class="section-sub">CROWDSOURCED SUBMISSIONS — REVIEWED BEFORE PUBLISHING</div>
+  <div class="notice">
+    All submissions are reviewed manually before being added to the archive. Do not submit personally identifiable information without verifiable proof. Your contact details are never published without your consent.
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label>TYPE OF EVIDENCE</label>
+      <select id="ev-type">
+        <option value="">Select type...</option>
+        <option>Score anomaly (large P1/P2 delta)</option>
+        <option>Impersonation suspicion</option>
+        <option>Paper leak / advance question knowledge</option>
+        <option>Witness account</option>
+        <option>Video / photo evidence</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>DESCRIPTION</label>
+      <textarea id="ev-desc" placeholder="Describe the evidence in as much detail as possible..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>LINK / SOURCE (if any)</label>
+      <input type="text" id="ev-link" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>YOUR EMAIL (optional — for follow-up only, never published)</label>
+      <input type="email" id="ev-email" placeholder="you@example.com">
+    </div>
+    <button class="btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
+  </div>
+</div>
+
+<div id="petition" class="section">
+  <div class="section-title">Petition to IIT Kanpur</div>
+  <div class="section-sub">DEMANDING AN OFFICIAL INVESTIGATION INTO JEE ADVANCED 2026</div>
+  <div class="petition-count" id="petition-num">...</div>
+  <div class="petition-bar-bg"><div class="petition-bar" id="pbar" style="width:0%"></div></div>
+  <div class="target-note">OF 10,000 SIGNATURES GOAL</div>
+  <div class="notice">
+    Once we reach a meaningful number of signatures, this petition will be emailed directly to the JEE Advanced 2026 organizing chairman at IIT Kanpur along with all collected evidence. Share the link to this site to grow the count.
+  </div>
+  <div class="card" style="margin-bottom:1.5rem">
+    <div class="card-title">PETITION DEMANDS</div>
+    <div class="card-body">
+      1. Immediate investigation into the 177+ flagged score anomalies<br>
+      2. Cross-verification of biometric attendance and CCTV footage for extreme delta cases<br>
+      3. Transparent public communication by IIT Kanpur addressing these concerns<br>
+      4. Re-evaluation or cancellation of results if systematic cheating is confirmed<br>
+      5. Accountability of exam proctors and third-party vendors
+    </div>
+  </div>
+  <div class="card">
+    <div class="form-group">
+      <label>FULL NAME</label>
+      <input type="text" id="pet-name" placeholder="Your full name">
+    </div>
+    <div class="form-group">
+      <label>EMAIL</label>
+      <input type="email" id="pet-email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label>YOUR ROLE</label>
+      <select id="pet-role">
+        <option value="">Select...</option>
+        <option>JEE Advanced 2026 candidate</option>
+        <option>JEE aspirant (future year)</option>
+        <option>Parent of a candidate</option>
+        <option>Student / concerned citizen</option>
+        <option>Teacher / coaching faculty</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="btn" onclick="signPetition()">SIGN THE PETITION →</button>
+  </div>
+</div>
+
+<div id="contact" class="section">
+  <div class="section-title">Contact IIT Kanpur</div>
+  <div class="section-sub">OFFICIAL CHANNELS TO FILE COMPLAINTS AND DEMAND ANSWERS</div>
+  <div class="notice">
+    File complaints directly with IIT Kanpur. Reference the Cracku dataset and the Reddit post. The more individual complaints filed, the harder it is to ignore. Use formal language and keep a copy of everything you send.
+  </div>
+  <div class="contact-card">
+    <div class="contact-name">IIT Kanpur — JEE Advanced 2026 Organizing Institute</div>
+    <div class="contact-role">OFFICIAL COMPLAINT EMAIL</div>
+    <div class="contact-email">jeeadv@iitk.ac.in</div>
+  </div>
+  <div class="contact-card">
+    <div class="contact-name">Ministry of Education — CPGRAMS Grievance Portal</div>
+    <div class="contact-role">GOVERNMENT ESCALATION</div>
+    <div class="contact-email"><a href="https://pgportal.gov.in" target="_blank" style="color:#888;text-decoration:none">pgportal.gov.in →</a></div>
+  </div>
+  <div style="margin-top:2rem">
+    <div class="section-title" style="font-size:1.1rem;margin-bottom:1rem">Generate a Complaint Email</div>
+    <div class="card">
+      <div class="form-group">
+        <label>YOUR NAME</label>
+        <input type="text" id="draft-name" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>YOUR ROLL NUMBER (if applicable)</label>
+        <input type="text" id="draft-roll" placeholder="JEE Advanced roll number">
+      </div>
+      <button class="btn btn-outline" onclick="generateDraft()">GENERATE DRAFT →</button>
+      <div id="draft-output" style="margin-top:1.2rem;display:none">
+        <label style="margin-bottom:8px;display:block">COPY AND SEND TO jeeadv@iitk.ac.in</label>
+        <textarea id="draft-text" style="height:240px;font-size:11px;line-height:1.9" readonly></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>INDEPENDENT · NON-PARTISAN · STUDENT-RUN</footer>
+<div class="toast" id="toast"></div>
+
+<!-- =====================================================
+     FIREBASE — replace config values with your own
+     ===================================================== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ⚠️ PASTE YOUR CONFIG HERE
+const firebaseConfig = {
+  apiKey: "AIzaSyDJ3plOTA0WbxivOpmilHEthFJx5H1TjUo",
+  authDomain: "jeeadvcheating.firebaseapp.com",
+  projectId: "jeeadvcheating",
+  storageBucket: "jeeadvcheating.firebasestorage.app",
+  messagingSenderId: "970954192643",
+  appId: "1:970954192643:web:0fedfaae9065a2ffdb1b36"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// render table
+const data=[
+  [126,16,142],[107,-3,104],[107,9,116],[107,113,6],[106,5,111],[105,2,107],
+  [103,102,-1],[103,106,3],[102,105,3],[97,5,102],[96,25,121],[96,30,126],
+  [95,3,98],[95,20,115],[93,5,98],[92,96,4],[91,111,20],[89,104,15],
+  [88,90,2],[87,26,113],[87,84,-3],[87,88,1],[86,2,88],[86,36,122],
+  [85,1,86],[85,5,90],[85,15,100],[85,101,16],[85,91,6],[85,85,0],
+  [84,-5,79],[84,77,-7],[83,90,7],[83,87,4],[82,8,90],[82,76,-6],
+  [82,85,3],[81,1,82],[81,94,13],[80,14,94],[80,18,98],[80,23,103],
+  [80,88,8],[80,81,1],[79,18,97],[79,38,117],[79,92,13],[79,88,9],
+  [78,107,29],[77,91,14],[77,87,10],[76,14,90],[76,22,98],[76,35,111],[76,90,14]
+];
+document.getElementById('table-body').innerHTML =
+  data.map((r,i)=>`<tr><td style="color:#555">${i+1}</td><td class="delta-red">+${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+// live petition count
+onSnapshot(collection(db,"signatures"), snap => {
+  const n = snap.size;
+  document.getElementById('petition-num').textContent = n.toLocaleString();
+  document.getElementById('sig-count').textContent    = n.toLocaleString();
+  document.getElementById('pbar').style.width         = Math.min(n/10000*100,100).toFixed(3)+'%';
+});
+
+// nav
+window.show = (id,btn) => {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+};
+
+// toast
+const toast = msg => {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+};
+
+// sign petition
+window.signPetition = async () => {
+  const name  = document.getElementById('pet-name').value.trim();
+  const email = document.getElementById('pet-email').value.trim();
+  const role  = document.getElementById('pet-role').value;
+  if(!name||!email){ toast('Please fill in name and email'); return; }
+  try {
+    await addDoc(collection(db,"signatures"),{ name, email, role, ts: new Date().toISOString() });
+    toast('Signature recorded. Thank you.');
+    ['pet-name','pet-email','pet-role'].forEach(id=>document.getElementById(id).value='');
+  } catch(e){ toast('Error saving. Try again.'); }
+};
+
+// submit evidence
+window.submitEvidence = async () => {
+  const type  = document.getElementById('ev-type').value;
+  const desc  = document.getElementById('ev-desc').value.trim();
+  const link  = document.getElementById('ev-link').value.trim();
+  const email = document.getElementById('ev-email').value.trim();
+  if(!type||!desc){ toast('Please fill type and description'); return; }
+  try {
+    await addDoc(collection(db,"evidence"),{ type, desc, link, email, status:"pending", ts: new Date().toISOString() });
+    toast('Submitted for review. Thank you.');
+    ['ev-type','ev-desc','ev-link','ev-email'].forEach(id=>document.getElementById(id).value='');
+  } catch(e){ toast('Error submitting. Try again.'); }
+};
+
+// generate draft
+window.generateDraft = () => {
+  const n    = document.getElementById('draft-name').value.trim()||'[Your Name]';
+  const r    = document.getElementById('draft-roll').value.trim();
+  const roll = r ? '\nJEE Advanced 2026 Roll Number: '+r : '';
+  document.getElementById('draft-text').value =
+`Subject: Formal Complaint Regarding Alleged Cheating in JEE Advanced 2026
+
+To,
+The Organizing Chairman,
+JEE Advanced 2026,
+IIT Kanpur
+
+Dear Sir/Madam,
+
+I am writing to formally bring to your attention a matter of serious concern regarding the integrity of JEE Advanced 2026.
+
+A statistical analysis of Cracku's JEE Advanced 2026 rank predictor data (~30,000 students) has identified 177+ candidates with a Paper 2 score more than 60 marks higher than their Paper 1 score. The most extreme case shows a candidate scoring 16 in Paper 1 and 142 in Paper 2 — a delta of 126 marks. Such discrepancies are statistically improbable under fair examination conditions and strongly suggest paper leakage, impersonation, or other forms of organized malpractice.
+
+I request the following actions be taken urgently:
+1. A formal investigation into the flagged candidate roll numbers
+2. Cross-verification of biometric attendance and CCTV footage for extreme delta cases
+3. A transparent public statement from IIT Kanpur addressing these concerns
+4. Appropriate action including result cancellation if malpractice is confirmed
+
+The hard work of thousands of honest candidates must not be undermined by institutional inaction.${roll}
+
+Yours sincerely,
+${n}`;
+  document.getElementById('draft-output').style.display='block';
+};
+</script>
+</body>
+</html>
