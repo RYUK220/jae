@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JEE Advanced 2026 — Cheating Exposed</title>
+<meta name="description" content="Statistical evidence of large-scale cheating in JEE Advanced 2026. 177+ anomalous cases from 30,000 student dataset.">
+<meta property="og:title" content="JEE Advanced 2026 — Cheating Exposed">
+<meta property="og:description" content="177+ flagged cases. Sign the petition. Demand an investigation.">
+<meta property="og:url" content="https://jeeadvcheating.xyz">
+<meta name="theme-color" content="#c0392b">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a0a;color:#e8e6e0;font-family:'Space Mono',monospace;min-height:100vh}
@@ -18,7 +24,7 @@ body{background:#0a0a0a;color:#e8e6e0;font-family:'Space Mono',monospace;min-hei
 .stat .num{font-size:2rem;font-weight:700;color:#e74c3c}
 .stat .lbl{font-size:10px;color:#666;letter-spacing:2px;margin-top:2px;text-align:center}
 nav{display:flex;justify-content:center;background:#111;border-bottom:1px solid #2a2a2a;flex-wrap:wrap}
-.nav-btn{background:none;border:none;color:#888;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:14px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
+.nav-btn{background:none;border:none;color:#888;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:14px 16px;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s}
 .nav-btn.active,.nav-btn:hover{color:#e74c3c;border-bottom-color:#e74c3c}
 .section{display:none;padding:2rem;max-width:900px;margin:0 auto}
 .section.active{display:block}
@@ -39,10 +45,13 @@ input[type=text],input[type=email],textarea,select{width:100%;background:#0a0a0a
 input:focus,textarea:focus,select:focus{border-color:#e74c3c}
 textarea{resize:vertical;min-height:100px}
 select option{background:#111}
-.btn{background:#e74c3c;color:#fff;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;padding:12px 24px;cursor:pointer;border-radius:2px;font-weight:700;transition:background 0.2s}
-.btn:hover{background:#c0392b}
+.btn{background:#e74c3c;color:#fff;border:none;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;padding:12px 24px;cursor:pointer;border-radius:2px;font-weight:700;transition:background 0.2s;display:inline-block}
+.btn:disabled{background:#555;cursor:not-allowed}
+.btn:hover:not(:disabled){background:#c0392b}
 .btn-outline{background:transparent;border:1px solid #e74c3c;color:#e74c3c}
-.btn-outline:hover{background:#e74c3c;color:#fff}
+.btn-outline:hover:not(:disabled){background:#e74c3c;color:#fff}
+.share-btn{background:#1a1a1a;border:1px solid #333;color:#ccc;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;padding:10px 20px;cursor:pointer;border-radius:2px;margin-top:1rem;transition:all 0.2s}
+.share-btn:hover{border-color:#e74c3c;color:#e74c3c}
 .petition-count{font-size:3rem;font-weight:700;color:#e74c3c;text-align:center;margin:1rem 0 0.3rem}
 .petition-bar-bg{background:#1a1a1a;border-radius:2px;height:6px;margin:0.5rem 0 0.5rem}
 .petition-bar{background:#e74c3c;height:6px;border-radius:2px;transition:width 0.4s}
@@ -58,6 +67,12 @@ select option{background:#111}
 .source-title{font-size:12px;color:#ccc;line-height:1.5;margin-bottom:8px}
 a.source-link{font-size:10px;color:#e74c3c;text-decoration:none;border-bottom:1px solid #e74c3c44;letter-spacing:1px}
 button.source-link{background:none;border:none;border-bottom:1px solid #e74c3c44;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;color:#e74c3c;letter-spacing:1px;padding:0}
+.ev-card{background:#111;border:1px solid #2a2a2a;border-left:3px solid #e74c3c;padding:1.2rem 1.5rem;margin-bottom:1rem;border-radius:2px}
+.ev-type-tag{font-size:9px;color:#e74c3c;letter-spacing:2px;margin-bottom:6px}
+.ev-desc{font-size:12px;color:#ccc;line-height:1.7;margin-bottom:6px}
+.ev-link a{font-size:10px;color:#e74c3c;text-decoration:none}
+.ev-empty{font-size:12px;color:#555;text-align:center;padding:2rem 0}
+.hcaptcha-wrap{margin-bottom:1.2rem}
 .toast{position:fixed;bottom:2rem;right:2rem;background:#e74c3c;color:#fff;padding:12px 20px;font-size:11px;letter-spacing:1px;border-radius:2px;display:none;z-index:999}
 footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1px;border-top:1px solid #1a1a1a;margin-top:2rem}
 </style>
@@ -80,25 +95,35 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
 
 <nav>
   <button class="nav-btn active" onclick="show('evidence',this)">EVIDENCE</button>
+  <button class="nav-btn" onclick="show('community',this)">COMMUNITY</button>
   <button class="nav-btn" onclick="show('sources',this)">SOURCES</button>
   <button class="nav-btn" onclick="show('submit',this)">SUBMIT PROOF</button>
   <button class="nav-btn" onclick="show('petition',this)">PETITION</button>
   <button class="nav-btn" onclick="show('contact',this)">CONTACT IIT</button>
 </nav>
 
+<!-- EVIDENCE -->
 <div id="evidence" class="section active">
   <div class="section-title">Statistical Evidence</div>
   <div class="section-sub">DATA SOURCE: CRACKU RANK PREDICTOR — ~30,000 STUDENT DATASET</div>
   <div class="notice">
-    A statistical analysis of Cracku's JEE Advanced 2026 rank predictor data (~30,000 students) by Reddit user u/Ok-Style1340 identified 177+ candidates with a Paper 2 score more than 60 marks higher than their Paper 1 score. The most extreme case: P1 score of 16, P2 score of 142 — a delta of +126 marks. Such anomalies are statistically inconsistent with normal performance variation and warrant an official investigation.
+    A statistical analysis of an open-source JEE Advanced marks calculator that analyzes official response sheets identified 177+ candidates with a Paper 2 score more than 60 marks higher than their Paper 1 score. The most extreme case: P1 score of 16, P2 score of 142 — a delta of +126 marks. Such anomalies are statistically inconsistent with normal performance variation and warrant an official investigation.
   </div>
   <table>
     <thead><tr><th>#</th><th>DELTA (P2−P1)</th><th>PAPER 1</th><th>PAPER 2</th></tr></thead>
     <tbody id="table-body"></tbody>
   </table>
-  <p style="font-size:11px;color:#555;text-align:center">Showing top cases from the Cracku dataset. Full data on Reddit r/JEEAdv26dailyupdates.</p>
+  <p style="font-size:11px;color:#555;text-align:center">Showing top cases. Full data on Reddit r/JEEAdv26dailyupdates.</p>
 </div>
 
+<!-- COMMUNITY -->
+<div id="community" class="section">
+  <div class="section-title">Community Evidence</div>
+  <div class="section-sub">APPROVED SUBMISSIONS FROM THE PUBLIC — ALL VERIFIED BEFORE PUBLISHING</div>
+  <div id="community-list"><div class="ev-empty">Loading...</div></div>
+</div>
+
+<!-- SOURCES -->
 <div id="sources" class="section">
   <div class="section-title">Source Archive</div>
   <div class="section-sub">ALL KNOWN EVIDENCE SOURCES</div>
@@ -121,16 +146,17 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
     <div class="source-card">
       <div class="source-type">SUBMIT · ADD SOURCE</div>
       <div class="source-title">Know of another source, article, or video? Submit it using the proof form.</div>
-      <button class="source-link" onclick="show('submit',document.querySelectorAll('.nav-btn')[2])">Submit a source →</button>
+      <button class="source-link" onclick="show('submit',document.querySelectorAll('.nav-btn')[3])">Submit a source →</button>
     </div>
   </div>
 </div>
 
+<!-- SUBMIT -->
 <div id="submit" class="section">
   <div class="section-title">Submit Evidence</div>
   <div class="section-sub">CROWDSOURCED SUBMISSIONS — REVIEWED BEFORE PUBLISHING</div>
   <div class="notice">
-    All submissions are reviewed manually before being added to the archive. Do not submit personally identifiable information without verifiable proof. Your contact details are never published without your consent.
+    All submissions are reviewed manually before being added to the Community tab. Do not submit personally identifiable information without verifiable proof. Your contact details are never published without your consent.
   </div>
   <div class="card">
     <div class="form-group">
@@ -154,13 +180,17 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
       <input type="text" id="ev-link" placeholder="https://...">
     </div>
     <div class="form-group">
-      <label>YOUR EMAIL (optional — for follow-up only, never published)</label>
+      <label>YOUR EMAIL (optional — never published)</label>
       <input type="email" id="ev-email" placeholder="you@example.com">
     </div>
-    <button class="btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
+    <div class="hcaptcha-wrap">
+      <div class="h-captcha" data-sitekey="YOUR_HCAPTCHA_SITE_KEY"></div>
+    </div>
+    <button class="btn" id="ev-btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
   </div>
 </div>
 
+<!-- PETITION -->
 <div id="petition" class="section">
   <div class="section-title">Petition to IIT Kanpur</div>
   <div class="section-sub">DEMANDING AN OFFICIAL INVESTIGATION INTO JEE ADVANCED 2026</div>
@@ -168,7 +198,10 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
   <div class="petition-bar-bg"><div class="petition-bar" id="pbar" style="width:0%"></div></div>
   <div class="target-note">OF 10,000 SIGNATURES GOAL</div>
   <div class="notice">
-    Once we reach a meaningful number of signatures, this petition will be emailed directly to the JEE Advanced 2026 organizing chairman at IIT Kanpur along with all collected evidence. Share the link to this site to grow the count.
+    Once we reach a meaningful number of signatures, this petition will be emailed directly to the JEE Advanced 2026 organizing chairman at IIT Kanpur along with all collected evidence. Share the link below to grow the count.
+  </div>
+  <div style="text-align:center;margin-bottom:2rem">
+    <button class="share-btn" onclick="copyLink()">⎘ COPY SITE LINK TO SHARE</button>
   </div>
   <div class="card" style="margin-bottom:1.5rem">
     <div class="card-title">PETITION DEMANDS</div>
@@ -201,15 +234,19 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
         <option>Other</option>
       </select>
     </div>
-    <button class="btn" onclick="signPetition()">SIGN THE PETITION →</button>
+    <div class="hcaptcha-wrap">
+      <div class="h-captcha" data-sitekey="YOUR_HCAPTCHA_SITE_KEY"></div>
+    </div>
+    <button class="btn" id="pet-btn" onclick="signPetition()">SIGN THE PETITION →</button>
   </div>
 </div>
 
+<!-- CONTACT -->
 <div id="contact" class="section">
   <div class="section-title">Contact IIT Kanpur</div>
   <div class="section-sub">OFFICIAL CHANNELS TO FILE COMPLAINTS AND DEMAND ANSWERS</div>
   <div class="notice">
-    File complaints directly with IIT Kanpur. Reference the Cracku dataset and the Reddit post. The more individual complaints filed, the harder it is to ignore. Use formal language and keep a copy of everything you send.
+    File complaints directly with IIT Kanpur. The more individual complaints filed, the harder it is to ignore. Use formal language and keep a copy of everything you send.
   </div>
   <div class="contact-card">
     <div class="contact-name">IIT Kanpur — JEE Advanced 2026 Organizing Institute</div>
@@ -241,17 +278,16 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
   </div>
 </div>
 
-<footer>INDEPENDENT · NON-PARTISAN · STUDENT-RUN</footer>
+<footer>INDEPENDENT · NON-PARTISAN · STUDENT-RUN · <a href="https://www.reddit.com/r/JEEAdv26dailyupdates/" target="_blank" style="color:#555;text-decoration:none">r/JEEAdv26dailyupdates</a></footer>
 <div class="toast" id="toast"></div>
 
-<!-- =====================================================
-     FIREBASE — replace config values with your own
-     ===================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getFirestore, collection, addDoc, onSnapshot,
+  query, where, getDocs, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ⚠️ PASTE YOUR CONFIG HERE
 const firebaseConfig = {
   apiKey: "AIzaSyDJ3plOTA0WbxivOpmilHEthFJx5H1TjUo",
   authDomain: "jeeadvcheating.firebaseapp.com",
@@ -260,10 +296,11 @@ const firebaseConfig = {
   messagingSenderId: "970954192643",
   appId: "1:970954192643:web:0fedfaae9065a2ffdb1b36"
 };
+
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// render table
+// ── Evidence table ─────────────────────────────────────────
 const data=[
   [126,16,142],[107,-3,104],[107,9,116],[107,113,6],[106,5,111],[105,2,107],
   [103,102,-1],[103,106,3],[102,105,3],[97,5,102],[96,25,121],[96,30,126],
@@ -278,7 +315,7 @@ const data=[
 document.getElementById('table-body').innerHTML =
   data.map((r,i)=>`<tr><td style="color:#555">${i+1}</td><td class="delta-red">+${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
 
-// live petition count
+// ── Live petition counter ──────────────────────────────────
 onSnapshot(collection(db,"signatures"), snap => {
   const n = snap.size;
   document.getElementById('petition-num').textContent = n.toLocaleString();
@@ -286,49 +323,111 @@ onSnapshot(collection(db,"signatures"), snap => {
   document.getElementById('pbar').style.width         = Math.min(n/10000*100,100).toFixed(3)+'%';
 });
 
-// nav
-window.show = (id,btn) => {
+// ── Load approved community evidence ──────────────────────
+async function loadCommunityEvidence() {
+  const list = document.getElementById('community-list');
+  list.innerHTML = '<div class="ev-empty">Loading...</div>';
+  try {
+    const q = query(
+      collection(db,"evidence"),
+      where("status","==","approved"),
+      orderBy("ts","desc")
+    );
+    const snap = await getDocs(q);
+    if(snap.empty){
+      list.innerHTML='<div class="ev-empty">No approved submissions yet. Be the first — submit your evidence.</div>';
+      return;
+    }
+    list.innerHTML = snap.docs.map(doc => {
+      const d = doc.data();
+      return `<div class="ev-card">
+        <div class="ev-type-tag">${d.type.toUpperCase()}</div>
+        <div class="ev-desc">${d.desc.replace(/</g,'&lt;')}</div>
+        ${d.link?`<div class="ev-link"><a href="${d.link}" target="_blank">${d.link}</a></div>`:''}
+      </div>`;
+    }).join('');
+  } catch(e){
+    list.innerHTML='<div class="ev-empty">Error loading submissions.</div>';
+    console.error(e);
+  }
+}
+loadCommunityEvidence();
+
+// ── Nav ────────────────────────────────────────────────────
+window.show = (id, btn) => {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if(id==='community') loadCommunityEvidence();
   if(btn) btn.classList.add('active');
 };
 
-// toast
+// ── Toast ──────────────────────────────────────────────────
 const toast = msg => {
   const t=document.getElementById('toast');
   t.textContent=msg; t.style.display='block';
-  setTimeout(()=>t.style.display='none',3000);
+  setTimeout(()=>t.style.display='none',3500);
 };
 
-// sign petition
+// ── Copy link ──────────────────────────────────────────────
+window.copyLink = () => {
+  navigator.clipboard.writeText('https://jeeadvcheating.xyz').then(()=>toast('Link copied! Share it.'));
+};
+
+// ── Captcha helper ─────────────────────────────────────────
+function getCaptchaToken() {
+  try { return window.hcaptcha.getResponse(); } catch(e){ return null; }
+}
+
+// ── Duplicate email check ──────────────────────────────────
+async function emailAlreadySigned(email) {
+  const q = query(collection(db,"signatures"), where("email","==",email));
+  const snap = await getDocs(q);
+  return !snap.empty;
+}
+
+// ── Sign petition ──────────────────────────────────────────
 window.signPetition = async () => {
   const name  = document.getElementById('pet-name').value.trim();
-  const email = document.getElementById('pet-email').value.trim();
+  const email = document.getElementById('pet-email').value.trim().toLowerCase();
   const role  = document.getElementById('pet-role').value;
+  const btn   = document.getElementById('pet-btn');
   if(!name||!email){ toast('Please fill in name and email'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email'); return; }
+  const token = getCaptchaToken();
+  if(!token){ toast('Please complete the captcha'); return; }
+  btn.disabled=true; btn.textContent='SAVING...';
   try {
+    if(await emailAlreadySigned(email)){ toast('This email has already signed.'); btn.disabled=false; btn.textContent='SIGN THE PETITION →'; return; }
     await addDoc(collection(db,"signatures"),{ name, email, role, ts: new Date().toISOString() });
     toast('Signature recorded. Thank you.');
     ['pet-name','pet-email','pet-role'].forEach(id=>document.getElementById(id).value='');
+    try{ window.hcaptcha.reset(); }catch(e){}
   } catch(e){ toast('Error saving. Try again.'); }
+  btn.disabled=false; btn.textContent='SIGN THE PETITION →';
 };
 
-// submit evidence
+// ── Submit evidence ────────────────────────────────────────
 window.submitEvidence = async () => {
   const type  = document.getElementById('ev-type').value;
   const desc  = document.getElementById('ev-desc').value.trim();
   const link  = document.getElementById('ev-link').value.trim();
   const email = document.getElementById('ev-email').value.trim();
+  const btn   = document.getElementById('ev-btn');
   if(!type||!desc){ toast('Please fill type and description'); return; }
+  const token = getCaptchaToken();
+  if(!token){ toast('Please complete the captcha'); return; }
+  btn.disabled=true; btn.textContent='SUBMITTING...';
   try {
     await addDoc(collection(db,"evidence"),{ type, desc, link, email, status:"pending", ts: new Date().toISOString() });
     toast('Submitted for review. Thank you.');
     ['ev-type','ev-desc','ev-link','ev-email'].forEach(id=>document.getElementById(id).value='');
+    try{ window.hcaptcha.reset(); }catch(e){}
   } catch(e){ toast('Error submitting. Try again.'); }
+  btn.disabled=false; btn.textContent='SUBMIT EVIDENCE →';
 };
 
-// generate draft
+// ── Generate draft ─────────────────────────────────────────
 window.generateDraft = () => {
   const n    = document.getElementById('draft-name').value.trim()||'[Your Name]';
   const r    = document.getElementById('draft-roll').value.trim();
@@ -345,7 +444,7 @@ Dear Sir/Madam,
 
 I am writing to formally bring to your attention a matter of serious concern regarding the integrity of JEE Advanced 2026.
 
-A statistical analysis of an open-source JEE Advanced marks calculator that analyzes official response sheets has identified 177+ candidates with a marks difference >60. The most extreme case shows a candidate scoring 16 in Paper 1 and 142 in Paper 2 — a delta of 126 marks. Such discrepancies are statistically improbable under fair examination conditions and strongly suggest paper leakage, impersonation, or other forms of organized malpractice.
+A statistical analysis of an open-source JEE Advanced marks calculator that analyzes official response sheets has identified 177+ candidates with a marks difference >60 between Paper 1 and Paper 2. The most extreme case shows a candidate scoring 16 in Paper 1 and 142 in Paper 2 — a delta of 126 marks. Such discrepancies are statistically improbable under fair examination conditions and strongly suggest paper leakage, impersonation, or other forms of organized malpractice.
 
 I request the following actions be taken urgently:
 1. A formal investigation into the flagged candidate roll numbers
