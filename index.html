@@ -84,7 +84,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
 <div class="hero">
   <div style="font-size:10px;color:#666;letter-spacing:3px;margin-bottom:0.5rem">EVIDENCE ARCHIVE</div>
   <h1>Exposing <span>Cheating</span> in<br>JEE Advanced 2026</h1>
-  <p>STATISTICAL ANOMALIES · CROWDSOURCED EVIDENCE · PETITION TO IIT KANPUR</p>
+  <p>STATISTICAL ANOMALIES · CROWDSOURCED EVIDENCE · PETITION TO IIT ROORKEE</p>
   <div class="stats-row">
     <div class="stat"><div class="num">177+</div><div class="lbl">Flagged cases</div></div>
     <div class="stat"><div class="num">~30K</div><div class="lbl">Dataset size</div></div>
@@ -184,7 +184,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
       <input type="email" id="ev-email" placeholder="you@example.com">
     </div>
     <div class="hcaptcha-wrap">
-      <div class="h-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
+      <div class="h-captcha" id="ev-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
     </div>
     <button class="btn" id="ev-btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
   </div>
@@ -192,13 +192,13 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
 
 <!-- PETITION -->
 <div id="petition" class="section">
-  <div class="section-title">Petition to IIT Kanpur</div>
+  <div class="section-title">Petition to IIT Roorkee</div>
   <div class="section-sub">DEMANDING AN OFFICIAL INVESTIGATION INTO JEE ADVANCED 2026</div>
   <div class="petition-count" id="petition-num">...</div>
   <div class="petition-bar-bg"><div class="petition-bar" id="pbar" style="width:0%"></div></div>
   <div class="target-note">OF 10,000 SIGNATURES GOAL</div>
   <div class="notice">
-    Once we reach a meaningful number of signatures, this petition will be emailed directly to the JEE Advanced 2026 organizing chairman at IIT Kanpur along with all collected evidence. Share the link below to grow the count.
+    Once we reach a meaningful number of signatures, this petition will be emailed directly to the JEE Advanced 2026 organizing chairman at IIT Roorkee along with all collected evidence. Share the link below to grow the count.
   </div>
   <div style="text-align:center;margin-bottom:2rem">
     <button class="share-btn" onclick="copyLink()">⎘ COPY SITE LINK TO SHARE</button>
@@ -208,7 +208,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
     <div class="card-body">
       1. Immediate investigation into the 177+ flagged score anomalies<br>
       2. Cross-verification of biometric attendance and CCTV footage for extreme delta cases<br>
-      3. Transparent public communication by IIT Kanpur addressing these concerns<br>
+      3. Transparent public communication by IIT Roorkee addressing these concerns<br>
       4. Re-evaluation or cancellation of results if systematic cheating is confirmed<br>
       5. Accountability of exam proctors and third-party vendors
     </div>
@@ -235,7 +235,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
       </select>
     </div>
     <div class="hcaptcha-wrap">
-      <div class="h-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
+      <div class="h-captcha" id="pet-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
     </div>
     <button class="btn" id="pet-btn" onclick="signPetition()">SIGN THE PETITION →</button>
   </div>
@@ -243,15 +243,15 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
 
 <!-- CONTACT -->
 <div id="contact" class="section">
-  <div class="section-title">Contact IIT Kanpur</div>
+  <div class="section-title">Contact IIT Roorkee</div>
   <div class="section-sub">OFFICIAL CHANNELS TO FILE COMPLAINTS AND DEMAND ANSWERS</div>
   <div class="notice">
-    File complaints directly with IIT Kanpur. The more individual complaints filed, the harder it is to ignore. Use formal language and keep a copy of everything you send.
+    File complaints directly with IIT Roorkee. The more individual complaints filed, the harder it is to ignore. Use formal language and keep a copy of everything you send.
   </div>
   <div class="contact-card">
-    <div class="contact-name">IIT Kanpur — JEE Advanced 2026 Organizing Institute</div>
+    <div class="contact-name">IIT Roorkee — JEE Advanced 2026 Organizing Institute</div>
     <div class="contact-role">OFFICIAL COMPLAINT EMAIL</div>
-    <div class="contact-email">jeeadv@iitk.ac.in</div>
+    <div class="contact-email">jeeadv@iitr.ac.in</div>
   </div>
   <div class="contact-card">
     <div class="contact-name">Ministry of Education — CPGRAMS Grievance Portal</div>
@@ -271,7 +271,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
       </div>
       <button class="btn btn-outline" onclick="generateDraft()">GENERATE DRAFT →</button>
       <div id="draft-output" style="margin-top:1.2rem;display:none">
-        <label style="margin-bottom:8px;display:block">COPY AND SEND TO jeeadv@iitk.ac.in</label>
+        <label style="margin-bottom:8px;display:block">COPY AND SEND TO jeeadv@iitr.ac.in</label>
         <textarea id="draft-text" style="height:240px;font-size:11px;line-height:1.9" readonly></textarea>
       </div>
     </div>
@@ -375,8 +375,16 @@ window.copyLink = () => {
 };
 
 // ── Captcha helper ─────────────────────────────────────────
-function getCaptchaToken() {
-  try { return window.hcaptcha.getResponse(); } catch(e){ return null; }
+function getCaptchaToken(widgetId) {
+  try {
+    const widgets = document.querySelectorAll('.h-captcha iframe');
+    // get response by container id
+    const el = document.getElementById(widgetId);
+    if(!el) return window.hcaptcha.getResponse();
+    // hcaptcha stores widget id in data attribute after render
+    const wid = el.getAttribute('data-hcaptcha-widget-id');
+    return wid ? window.hcaptcha.getResponse(wid) : window.hcaptcha.getResponse();
+  } catch(e){ return null; }
 }
 
 // ── Duplicate email check ──────────────────────────────────
@@ -394,7 +402,7 @@ window.signPetition = async () => {
   const btn   = document.getElementById('pet-btn');
   if(!name||!email){ toast('Please fill in name and email'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email'); return; }
-  const token = getCaptchaToken();
+  const token = getCaptchaToken('pet-captcha');
   if(!token){ toast('Please complete the captcha'); return; }
   btn.disabled=true; btn.textContent='SAVING...';
   try {
@@ -402,7 +410,7 @@ window.signPetition = async () => {
     await addDoc(collection(db,"signatures"),{ name, email, role, ts: new Date().toISOString() });
     toast('Signature recorded. Thank you.');
     ['pet-name','pet-email','pet-role'].forEach(id=>document.getElementById(id).value='');
-    try{ window.hcaptcha.reset(); }catch(e){}
+    try{ const el=document.getElementById('pet-captcha'); const wid=el&&el.getAttribute('data-hcaptcha-widget-id'); wid?window.hcaptcha.reset(wid):window.hcaptcha.reset(); }catch(e){}
   } catch(e){ toast('Error saving. Try again.'); }
   btn.disabled=false; btn.textContent='SIGN THE PETITION →';
 };
@@ -415,14 +423,14 @@ window.submitEvidence = async () => {
   const email = document.getElementById('ev-email').value.trim();
   const btn   = document.getElementById('ev-btn');
   if(!type||!desc){ toast('Please fill type and description'); return; }
-  const token = getCaptchaToken();
+  const token = getCaptchaToken('ev-captcha');
   if(!token){ toast('Please complete the captcha'); return; }
   btn.disabled=true; btn.textContent='SUBMITTING...';
   try {
     await addDoc(collection(db,"evidence"),{ type, desc, link, email, status:"pending", ts: new Date().toISOString() });
     toast('Submitted for review. Thank you.');
     ['ev-type','ev-desc','ev-link','ev-email'].forEach(id=>document.getElementById(id).value='');
-    try{ window.hcaptcha.reset(); }catch(e){}
+    try{ const el=document.getElementById('ev-captcha'); const wid=el&&el.getAttribute('data-hcaptcha-widget-id'); wid?window.hcaptcha.reset(wid):window.hcaptcha.reset(); }catch(e){}
   } catch(e){ toast('Error submitting. Try again.'); }
   btn.disabled=false; btn.textContent='SUBMIT EVIDENCE →';
 };
@@ -438,7 +446,7 @@ window.generateDraft = () => {
 To,
 The Organizing Chairman,
 JEE Advanced 2026,
-IIT Kanpur
+IIT Roorkee
 
 Dear Sir/Madam,
 
@@ -449,7 +457,7 @@ A statistical analysis of an open-source JEE Advanced marks calculator that anal
 I request the following actions be taken urgently:
 1. A formal investigation into the flagged candidate roll numbers
 2. Cross-verification of biometric attendance and CCTV footage for extreme delta cases
-3. A transparent public statement from IIT Kanpur addressing these concerns
+3. A transparent public statement from IIT Roorkee addressing these concerns
 4. Appropriate action including result cancellation if malpractice is confirmed
 
 The hard work of thousands of honest candidates must not be undermined by institutional inaction.${roll}
