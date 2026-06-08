@@ -10,7 +10,6 @@
 <meta property="og:url" content="https://jeeadvcheating.xyz">
 <meta name="theme-color" content="#c0392b">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0a0a0a;color:#e8e6e0;font-family:'Space Mono',monospace;min-height:100vh}
@@ -72,12 +71,16 @@ button.source-link{background:none;border:none;border-bottom:1px solid #e74c3c44
 .ev-desc{font-size:12px;color:#ccc;line-height:1.7;margin-bottom:6px}
 .ev-link a{font-size:10px;color:#e74c3c;text-decoration:none}
 .ev-empty{font-size:12px;color:#555;text-align:center;padding:2rem 0}
-.hcaptcha-wrap{margin-bottom:1.2rem}
 .toast{position:fixed;bottom:2rem;right:2rem;background:#e74c3c;color:#fff;padding:12px 20px;font-size:11px;letter-spacing:1px;border-radius:2px;display:none;z-index:999}
 footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1px;border-top:1px solid #1a1a1a;margin-top:2rem}
 </style>
 </head>
 <body>
+<!-- honeypot fields - hidden from real users -->
+<style>.hp-field{opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;}</style>
+<input class="hp-field" type="text" id="hp-ev" tabindex="-1" autocomplete="off">
+<input class="hp-field" type="text" id="hp-pet" tabindex="-1" autocomplete="off">
+<script>window._evLoadTime = Date.now(); window._petLoadTime = Date.now();</script>
 
 <div class="ticker">⚠ JEE ADVANCED 2026 — ALLEGED LARGE-SCALE CHEATING — 177+ FLAGGED FROM ~30,000 STUDENT DATASET</div>
 
@@ -183,10 +186,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
       <label>YOUR EMAIL (optional — never published)</label>
       <input type="email" id="ev-email" placeholder="you@example.com">
     </div>
-    <div class="hcaptcha-wrap">
-      <div class="h-captcha" id="ev-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
-    </div>
-    <button class="btn" id="ev-btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
+<button class="btn" id="ev-btn" onclick="submitEvidence()">SUBMIT EVIDENCE →</button>
   </div>
 </div>
 
@@ -234,10 +234,7 @@ footer{text-align:center;padding:2rem;font-size:10px;color:#444;letter-spacing:1
         <option>Other</option>
       </select>
     </div>
-    <div class="hcaptcha-wrap">
-      <div class="h-captcha" id="pet-captcha" data-sitekey="f12c86a2-7720-4da6-b2a2-4ab2bd0c477c"></div>
-    </div>
-    <button class="btn" id="pet-btn" onclick="signPetition()">SIGN THE PETITION →</button>
+<button class="btn" id="pet-btn" onclick="signPetition()">SIGN THE PETITION →</button>
   </div>
 </div>
 
@@ -375,16 +372,12 @@ window.copyLink = () => {
 };
 
 // ── Captcha helper ─────────────────────────────────────────
-function getCaptchaToken(widgetId) {
-  try {
-    const widgets = document.querySelectorAll('.h-captcha iframe');
-    // get response by container id
-    const el = document.getElementById(widgetId);
-    if(!el) return window.hcaptcha.getResponse();
-    // hcaptcha stores widget id in data attribute after render
-    const wid = el.getAttribute('data-hcaptcha-widget-id');
-    return wid ? window.hcaptcha.getResponse(wid) : window.hcaptcha.getResponse();
-  } catch(e){ return null; }
+function checkHoneypot(hpId, loadTimeKey) {
+  const hp = document.getElementById(hpId);
+  if(hp && hp.value !== '') return false; // bot filled hidden field
+  const elapsed = Date.now() - (window[loadTimeKey] || 0);
+  if(elapsed < 2000) return false; // submitted in under 2s — bot
+  return true;
 }
 
 // ── Duplicate email check ──────────────────────────────────
@@ -402,16 +395,14 @@ window.signPetition = async () => {
   const btn   = document.getElementById('pet-btn');
   if(!name||!email){ toast('Please fill in name and email'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email'); return; }
-  const token = getCaptchaToken('pet-captcha');
-  if(!token){ toast('Please complete the captcha'); return; }
+  if(!checkHoneypot('hp-pet','_petLoadTime')){ toast('Submission rejected.'); return; }
   btn.disabled=true; btn.textContent='SAVING...';
   try {
     if(await emailAlreadySigned(email)){ toast('This email has already signed.'); btn.disabled=false; btn.textContent='SIGN THE PETITION →'; return; }
     await addDoc(collection(db,"signatures"),{ name, email, role, ts: new Date().toISOString() });
     toast('Signature recorded. Thank you.');
     ['pet-name','pet-email','pet-role'].forEach(id=>document.getElementById(id).value='');
-    try{ const el=document.getElementById('pet-captcha'); const wid=el&&el.getAttribute('data-hcaptcha-widget-id'); wid?window.hcaptcha.reset(wid):window.hcaptcha.reset(); }catch(e){}
-  } catch(e){ toast('Error saving. Try again.'); }
+    } catch(e){ toast('Error saving. Try again.'); }
   btn.disabled=false; btn.textContent='SIGN THE PETITION →';
 };
 
@@ -423,15 +414,13 @@ window.submitEvidence = async () => {
   const email = document.getElementById('ev-email').value.trim();
   const btn   = document.getElementById('ev-btn');
   if(!type||!desc){ toast('Please fill type and description'); return; }
-  const token = getCaptchaToken('ev-captcha');
-  if(!token){ toast('Please complete the captcha'); return; }
+  if(!checkHoneypot('hp-ev','_evLoadTime')){ toast('Submission rejected.'); return; }
   btn.disabled=true; btn.textContent='SUBMITTING...';
   try {
     await addDoc(collection(db,"evidence"),{ type, desc, link, email, status:"pending", ts: new Date().toISOString() });
     toast('Submitted for review. Thank you.');
     ['ev-type','ev-desc','ev-link','ev-email'].forEach(id=>document.getElementById(id).value='');
-    try{ const el=document.getElementById('ev-captcha'); const wid=el&&el.getAttribute('data-hcaptcha-widget-id'); wid?window.hcaptcha.reset(wid):window.hcaptcha.reset(); }catch(e){}
-  } catch(e){ toast('Error submitting. Try again.'); }
+    } catch(e){ toast('Error submitting. Try again.'); }
   btn.disabled=false; btn.textContent='SUBMIT EVIDENCE →';
 };
 
